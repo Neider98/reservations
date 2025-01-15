@@ -1,7 +1,9 @@
 package com.restaurant.reservations.facade;
 
+import com.restaurant.reservations.mapper.availableSchedule.IAvailableScheduleMapper;
 import com.restaurant.reservations.mapper.reservation.IReservationMapper;
 import com.restaurant.reservations.models.dto.ReservationDto;
+import com.restaurant.reservations.services.available.IAvailableScheduleService;
 import com.restaurant.reservations.services.customer.ICustomerService;
 import com.restaurant.reservations.services.document.IDocumentService;
 import com.restaurant.reservations.services.reservation.IReservationService;
@@ -17,13 +19,26 @@ public class ReservationFacade {
 
     private ICustomerService customerService;
     private IDocumentService documentService;
+    private IAvailableScheduleService availableScheduleService;
+    private IAvailableScheduleMapper availableScheduleMapping;
     private IReservationService reservationService;
     private IReservationMapper reservationMapping;
 
-    public ReservationDto createReservation(ReservationDto ReservationDto) {
+    public ReservationDto createReservation(ReservationDto reservationDto) {
 
         var reservationEntity = reservationMapping
-                .mapDtoToEntity(ReservationDto);
+                .mapDtoToEntity(reservationDto);
+        var day = reservationEntity.getReservationDate().getDayAvailable();
+        var hour = reservationEntity.getReservationDate().getHourAvailable();
+
+        var availableSchedule =
+                (availableScheduleService.getAvailableScheduleByHour(day,
+                        hour));
+        if (availableSchedule.isEmpty() || availableSchedule.get().getAvailable() != 1) {
+           return new ReservationDto();
+        }
+        reservationEntity.setReservationDate(
+                availableScheduleMapping.mapDtoToEntity(availableSchedule.get()));
 
         var document =
                 documentService.saveDocument(reservationEntity.getCustomer().getDocument());

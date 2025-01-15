@@ -5,9 +5,11 @@ import com.restaurant.reservations.repositories.document.IDocumentRepository;
 import com.restaurant.reservations.services.document.IDocumentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
 @Service
+@Transactional
 public class DocumentServiceImpl implements IDocumentService {
 
     private final IDocumentRepository documentRepository;

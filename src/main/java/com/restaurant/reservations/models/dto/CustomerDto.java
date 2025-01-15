@@ -8,8 +8,9 @@ public class CustomerDto {
     private long id;
     private String firstName;
     private String lastName;
+    private DocumentDto document;
     private String phoneNumber;
     private String email;
-    private DocumentDto document;
+
 
 }

@@ -22,25 +22,6 @@
             <img class="img-banner" src="https://marketing4ecommerce.co/wp-content/uploads/2018/06/Ahora-puedes-hacer-reservaciones-en-restaurantes-desde-Google-Maps-Colombia-compressor.jpg" alt="banner">
         </div>
         <div class="reservation">
-            <h2>Informacion Cliente</h2>
-            <form id="form_customer">
-                <div class="first_name">
-                    <label for="customer_name">Nombres</label>
-                    <input type="text" name="nombre_cliente" id="customer_name" value="" required>
-                </div>
-                <div class="last_name">
-                    <label for="customer_last_name">Apellidos</label>
-                    <input type="text" name="apellido_cliente" id="customer_last_name" value="" required>
-                </div>
-                <div class="document">
-                    <label for="customer_document">Numero de Identidad</label>
-                    <input type="text" name="documento_cliente" id="customer_document" value="" maxlength="10" minlength="5" required>
-                </div>
-                <div class="phoneNumber">
-                    <label for="customer_tel">Telefono</label>
-                    <input type="tel" name="telefono_cliente" id="customer_tel">
-                </div>
-            </form>
             <h2>Informacion Reservacion</h2>
             <form id="form_reservation">
                 <div class="reservation_date">
@@ -56,7 +37,7 @@
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header" bis_skin_checked="1">
-                        <h5 class="modal-title" id="gridModalLabel">Disponibilidad de Horarios</h5>
+                        <h5 class="modal-title" id="gridModalLabel">Disponibilidad de Horarios (Lunes a Domingo - 11AM a 12PM)</h5>
                         <button type="button" class="btn-close"
                             data-bs-dismiss="modal"
                             aria-label="Close"
@@ -81,11 +62,52 @@
                   <p><strong>Fecha de fin:</strong> <span id="eventEnd"></span></p>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-danger" id="deleteReservation">Eliminar Reserva</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
               </div>
             </div>
-          </div>
+        </div>
+
+        <div class="modal fade" id="eventModalSchedule" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eventModalLabel">Informacion Cliente</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form_customer">
+                            <div class="first_name">
+                                <label for="customer_name">Nombres</label>
+                                <input type="text" name="nombre_cliente" id="customer_name" value="" required>
+                            </div>
+                            <div class="last_name">
+                                <label for="customer_last_name">Apellidos</label>
+                                <input type="text" name="apellido_cliente" id="customer_last_name" value="" required>
+                            </div>
+                            <div class="document">
+                                <label for="customer_document">Numero de Identidad</label>
+                                <input type="text" name="documento_cliente" id="customer_document" value="" maxlength="10" minlength="5" required>
+                            </div>
+                            <div class="phoneNumber">
+                                <label for="customer_tel">Telefono</label>
+                                <input type="tel" name="telefono_cliente" id="customer_tel">
+                            </div>
+                            <div class="email">
+                                <label for="customer_email">Correo Electronico</label>
+                                <input type="email" name="correo_cliente" id="customer_email">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" id="reserveButton">Reservar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </main>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

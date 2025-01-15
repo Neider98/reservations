@@ -8,7 +8,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "horarios_disponibles")
+@Table(name = "horarios_disponibles", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"dia", "hora"})
+})
 @Data
 public class AvailableScheduleEntity {
 
@@ -16,11 +18,11 @@ public class AvailableScheduleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "dia", nullable = false)
-    private LocalDate dayAvaliable;
+    private LocalDate dayAvailable;
     @Column(name = "hora", nullable = false)
-    private LocalTime hourAvaliable;
+    private LocalTime hourAvailable;
     @Column(name = "disponible", nullable = false)
-    private int avaliable;
+    private int available;
     private LocalDateTime createAt;
 
     @PrePersist

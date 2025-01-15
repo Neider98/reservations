@@ -30,8 +30,7 @@ public class CustomerEntity implements Serializable {
     private String phoneNumber;
     @Column(name = "correo_electronico")
     private String email;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_reservaciones")
+    @OneToMany( mappedBy = "customer", cascade = CascadeType.ALL)
     private List<ReservationEntity> reservations;
     private LocalDateTime createAt;
 

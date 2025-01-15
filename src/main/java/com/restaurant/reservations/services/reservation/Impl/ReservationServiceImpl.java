@@ -5,6 +5,7 @@ import com.restaurant.reservations.repositories.reservation.IReservationReposito
 import com.restaurant.reservations.services.reservation.IReservationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Service
+@Transactional
 public class ReservationServiceImpl implements IReservationService {
 
     private final IReservationRepository reservationRepository;
@@ -25,7 +27,7 @@ public class ReservationServiceImpl implements IReservationService {
 
     @Override
     public List<ReservationEntity> getReservationByDay(LocalDate date) {
-        return reservationRepository.findByReservationDate_DayAvaliable(date);
+        return reservationRepository.findByReservationDateDayAvailable(date);
     }
 
     @Override
