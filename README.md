@@ -2,14 +2,67 @@
 
 Este proyecto gestiona las reservaciones en un restaurante.
 
+## Software requerido
+
+- Java 17
+- Maven
+- MySQL
+
+## Instrucciones para ejecutar tu programa y probar la solución.
+
+1. Clonar el repositorio
+2. Ejecutar el script de creacion de tablas
+3. Ejecutar el script de alimentacion de tablas
+4. Ejecutar el archivo script.sh para limpiar, compilar y ejecutar el aplicativo
+5. Abrir el navegador e ir a la direccion http://localhost:8080
+
 ## Diagrama ER
 
+![Diagrama ER](diagrams/diagrama1.PNG)
 ![Diagrama ER](diagrams/diagrama_er.png)
 
+## Plan de Escalabilidad
 
-## Scripts
+### Situación Actual
+El sistema actual maneja reservaciones de restaurante con una arquitectura monolítica y base de datos relacional.
+
+### Desafíos
+- Aumento en consultas de horarios disponibles
+- Incremento en creación de reservaciones
+- Necesidad de mantener consistencia en horarios
+- Mayor demanda en horas pico
+
+### Plan de Mejoras
+
+#### Fase 1: Optimización Inicial
+- Implementar WebFlux para manejo asíncrono de solicitudes
+- Implementar Caché
+- Implementar WebSocket para notificaciones en tiempo real
+- Implementar Excepciones personalizadas
+- Implementar Validaciones mas estricas
+
+#### Fase 2: Sistema de Mensajería
+- Integración con RabbitMQ/Kafka
+- Implementar notificaciones por correo electronico
+- Implementar notificaciones por SMS
+
+#### Fase 3: Arquitectura de Microservicios
+- Separación en servicios:
+  - Servicio de Reservaciones
+  - Servicio de Horarios
+  - Servicio de Clientes
+  - Servicio de Notificaciones
+
+
+## Diagrama de tablas
+
+![Diagrama de tablas](diagrams/diagrama_tablas.PNG)
+
+## Scripts SQL
 
 ### Scripts para la creacion de las tablas
+
+#### Script para crear la tabla de horarios disponibles
 ```
 CREATE TABLE horarios_disponibles (
 	id BIGINT NOT NULL AUTO_INCREMENT,
@@ -20,7 +73,10 @@ CREATE TABLE horarios_disponibles (
 	PRIMARY KEY (id),
 	UNIQUE KEY UK_dia_hora (dia, hora)
 );
+```
 
+#### Script para crear la tabla de documentos de identidad
+```
 CREATE TABLE documentos_identidad (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	tipo_documento VARCHAR(5) NOT NULL,
@@ -31,7 +87,10 @@ CREATE TABLE documentos_identidad (
 	PRIMARY KEY (id),
 	UNIQUE KEY UK_numero_documento (numero_documento)
 );
+```
 
+#### Script para crear la tabla de clientes
+```
 CREATE TABLE clientes (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	id_documento_identidad BIGINT NOT NULL,
@@ -46,7 +105,10 @@ CREATE TABLE clientes (
 	CONSTRAINT FK_cliente_documento_identidad FOREIGN KEY (id_documento_identidad)
 		REFERENCES documentos_identidad(id)
 );
+```
 
+#### Script para crear la tabla de reservaciones
+```
 CREATE TABLE reservaciones (
 	id BIGINT NOT NULL AUTO_INCREMENT,
   	create_at DATETIME(6) DEFAULT NULL,
@@ -102,11 +164,11 @@ INSERT INTO horarios_disponibles (dia, hora, disponible, create_at) VALUES
 
 ### Script para verificar(Consultar) los horarios disponibles en un dia especifico
 
-- SELECT * FROM horarios_disponibles WHERE dia = '2025-01-15' AND disponible = 1;
+``` SELECT * FROM horarios_disponibles WHERE dia = '2025-01-15' AND disponible = 1; ```
 
 ### Script para crear una reservacion
 
-- INSERT INTO reservaciones (create_at, id_cliente, id_horario, update_at) VALUES (NOW(), 1, 2, NOW());
+``` INSERT INTO reservaciones (create_at, id_cliente, id_horario, update_at) VALUES (NOW(), 1, 2, NOW()); ```
 
 ### Script para actualizar el estado de una reservacion
 ```
@@ -120,18 +182,29 @@ WHERE r.id = 1;
 
 ### Script para eliminar una reservacion
 
-- DELETE FROM reservaciones WHERE id = 1;
+``` DELETE FROM reservaciones WHERE id = 1; ```
 
 ## Estructura del Proyecto
 
-- `src/main/java/com/reservations/reservations/`: Código Java para la aplicación.
-- `src/main/java/com/reservations/reservations/controller/`: Controladores para la aplicación.
-- `src/main/java/com/reservations/reservations/model/`: Modelos para la aplicación.
-- `src/main/java/com/reservations/reservations/repository/`: Repositorios para la aplicación.
-- `src/main/java/com/reservations/reservations/service/`: Servicios para la aplicación.
-- `src/main/java/com/reservations/reservations/mapper/`: Mapper para la aplicación.
+- `src/main/java/com/restaurant/reservations/`: Código Java para la aplicación.
+- `src/main/java/com/restaurant/reservations/controller/`: Controladores para la aplicación.
+- `src/main/java/com/restaurant/reservations/model/`: Modelos para la aplicación.
+- `src/main/java/com/restaurant/reservations/repository/`: Repositorios para la aplicación.
+- `src/main/java/com/restaurant/reservations/service/`: Servicios para la aplicación.
+- `src/main/java/com/restaurant/reservations/mapper/`: Mapper para la aplicación.
 
 - `src/main/resources/static/js/main.js`: Código JavaScript para la funcionalidad del calendario.
 - `src/main/resources/static/index.html`: Archivo HTML principal.
 - `src/main/resources/static/css/main.css`: Estilos CSS para la aplicación.
+
+## tecnologias usadas
+
+- Java 17
+- Maven
+- MySQL
+- Spring Boot
+- Spring Data JPA
+- Hibernate
+- Lombok
+- MapStruct
 

@@ -48,9 +48,6 @@ public class ReservationController {
     public ResponseEntity<ReservationDto> updateReservation(
             @RequestBody ReservationDto reservationDto,
             @PathVariable long id){
-        if (reservationDto.getId() != id) {
-            return ResponseEntity.badRequest().build();
-        }
         var reservation = reservationFacade.updateReservation(reservationDto,
                 id);
         return reservation == null

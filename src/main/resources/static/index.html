@@ -52,40 +52,71 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal fade" id="eventModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="eventModalLabel">
-                        <i class="fas fa-info-circle me-2"></i>
-                        Detalles de la Reserva
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">Detalles de la Reserva</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="card">
-                        <div class="card-body">
+                    <!-- Vista de detalles -->
+                    <div id="detailsView">
+                        <p><strong>Reserva:</strong> <span id="eventTitle"></span></p>
+                        <p><strong>Inicio:</strong> <span id="eventStart"></span></p>
+                        <p><strong>Fin:</strong> <span id="eventEnd"></span></p>
+                    </div>
+                    
+                    <!-- Vista de edición -->
+                    <div id="editView" style="display: none;">
+                        <form id="editReservationForm">
                             <div class="mb-3">
-                                <label class="text-muted">Reserva</label>
-                                <h6 id="eventTitle" class="mb-0"></h6>
+                                <label class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="edit_customer_name" required>
                             </div>
                             <div class="mb-3">
-                                <label class="text-muted">Inicio</label>
-                                <h6 id="eventStart" class="mb-0"></h6>
+                                <label class="form-label">Apellido</label>
+                                <input type="text" class="form-control" id="edit_customer_last_name" required>
                             </div>
                             <div class="mb-3">
-                                <label class="text-muted">Fin</label>
-                                <h6 id="eventEnd" class="mb-0"></h6>
+                                <label class="form-label">Documento</label>
+                                <input type="text" class="form-control" id="edit_customer_document" required>
                             </div>
-                        </div>
+                            <div class="mb-3">
+                                <label class="form-label">Teléfono</label>
+                                <input type="tel" class="form-control" id="edit_customer_tel">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="edit_customer_email">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Fecha</label>
+                                <input type="date" class="form-control" id="edit_date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Hora</label>
+                                <input type="time" class="form-control" id="edit_time" required>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" id="deleteReservation">
-                        <i class="fas fa-trash-alt me-2"></i>
-                        Eliminar Reserva
+                    <!-- Botones para vista de detalles -->
+                    <button type="button" class="btn btn-primary" id="editReservation">
+                        <i class="fas fa-edit me-2"></i>Editar
                     </button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-danger" id="deleteReservation">
+                        <i class="fas fa-trash-alt me-2"></i>Eliminar
+                    </button>
+                    
+                    <!-- Botones para vista de edición -->
+                    <button type="button" class="btn btn-secondary" id="cancelEdit" style="display: none;">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-success" id="saveEdit" style="display: none;">
+                        Guardar
+                    </button>
                 </div>
             </div>
         </div>
@@ -94,37 +125,77 @@
     <div class="modal fade" id="eventModalSchedule" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="eventModalLabel">Informacion Cliente</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="eventModalLabel">
+                        <i class="fas fa-user-plus me-2"></i>
+                        Información del Cliente
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="form_customer">
-                        <div class="first_name">
-                            <label for="customer_name">Nombres</label>
-                            <input type="text" name="nombre_cliente" id="customer_name" value="" required>
+                    <form id="form_customer" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label for="customer_name" class="form-label">Nombres</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control" name="nombre_cliente" id="customer_name" 
+                                       placeholder="Ingrese sus nombres" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingrese sus nombres
+                                </div>
+                            </div>
                         </div>
-                        <div class="last_name">
-                            <label for="customer_last_name">Apellidos</label>
-                            <input type="text" name="apellido_cliente" id="customer_last_name" value="" required>
+
+                        <div class="mb-3">
+                            <label for="customer_last_name" class="form-label">Apellidos</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control" name="apellido_cliente" id="customer_last_name" 
+                                       placeholder="Ingrese sus apellidos" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingrese sus apellidos
+                                </div>
+                            </div>
                         </div>
-                        <div class="document">
-                            <label for="customer_document">Numero de Identidad</label>
-                            <input type="text" name="documento_cliente" id="customer_document" value="" maxlength="10" minlength="5" required>
+
+                        <div class="mb-3">
+                            <label for="customer_document" class="form-label">Número de Identidad</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                <input type="text" class="form-control" name="documento_cliente" id="customer_document" 
+                                       maxlength="10" minlength="5" placeholder="Ingrese su documento" required>
+                                <div class="invalid-feedback">
+                                    El documento debe tener entre 5 y 10 caracteres
+                                </div>
+                            </div>
                         </div>
-                        <div class="phoneNumber">
-                            <label for="customer_tel">Telefono</label>
-                            <input type="tel" name="telefono_cliente" id="customer_tel">
+
+                        <div class="mb-3">
+                            <label for="customer_tel" class="form-label">Teléfono</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                <input type="tel" class="form-control" name="telefono_cliente" id="customer_tel" 
+                                       placeholder="Ingrese su teléfono">
+                            </div>
                         </div>
-                        <div class="email">
-                            <label for="customer_email">Correo Electronico</label>
-                            <input type="email" name="correo_cliente" id="customer_email">
+
+                        <div class="mb-3">
+                            <label for="customer_email" class="form-label">Correo Electrónico</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <input type="email" class="form-control" name="correo_cliente" id="customer_email" 
+                                       placeholder="ejemplo@correo.com">
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="reserveButton">Reservar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cerrar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="reserveButton">
+                        <i class="fas fa-calendar-check me-2"></i>Reservar
+                    </button>
                 </div>
             </div>
         </div>

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IReservationRepository extends JpaRepository<ReservationEntity, Long> {
 
-    List<ReservationEntity> findByReservationDateDayAvailable(LocalDate dayAvaliable);
+    List<ReservationEntity> findByReservationDateDayAvailableAndStatusNotIgnoreCase(LocalDate dayAvaliable, String status);
 
 
 }

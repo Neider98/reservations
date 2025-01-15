@@ -23,23 +23,24 @@ public class ScheduledTasks {
     @Scheduled(cron = "0 0 0 * * *")
     public void updateScheduleAvailability() {
         LocalDate today = LocalDate.now();
-        var listAvaliable =
-                avaliableScheduleRepository.findByDayAvailableAfter(today);
-        List<AvailableScheduleEntity> avaliableScheduleList =
-                new ArrayList<>();
-        if (listAvaliable.isPresent() && !listAvaliable.get().isEmpty()) {
-            LocalDate lastDate =
-                    listAvaliable.get().get(listAvaliable.get().size() - 1).getDayAvailable();
-            var differenceDays = ChronoUnit.DAYS.between(today, lastDate);
-            if (differenceDays <= 30) {
-                createAvailabilityDay(avaliableScheduleList, 1, today.plusDays(differenceDays + 1));
-                avaliableScheduleRepository.saveAll(avaliableScheduleList);
+        var listAvailable = avaliableScheduleRepository.findByDayAvailableAfter(today);
+        
+        if (listAvailable.isPresent() && !listAvailable.get().isEmpty()) {
+            if (!isDayComplete(today)) {
+                fillDay(today);
+            }
+            
+            for (int i = 1; i <= 30; i++) {
+                LocalDate futureDate = today.plusDays(i);
+                if (!isDayComplete(futureDate)) {
+                    fillDay(futureDate);
+                }
             }
         } else {
             for (int i = 0; i < 30; i++) {
-                createAvailabilityDay(avaliableScheduleList, i, today);
+                LocalDate futureDate = today.plusDays(i);
+                fillDay(futureDate);
             }
-            avaliableScheduleRepository.saveAll(avaliableScheduleList);
         }
     }
 
@@ -48,17 +49,28 @@ public class ScheduledTasks {
         updateScheduleAvailability();
     }
 
-    private void createAvailabilityDay(
-            List<AvailableScheduleEntity> avaliableScheduleList, int i,
-            LocalDate today) {
-        AvailableScheduleEntity avaliableSchedule;
-        for (int j = 11; j<23; j++) {
-            avaliableSchedule = new AvailableScheduleEntity();
-            LocalDate futureDate = today.plusDays(i);
-            avaliableSchedule.setDayAvailable(futureDate);
-            avaliableSchedule.setHourAvailable(LocalTime.of(j, 0));
-            avaliableSchedule.setAvailable(1);
-            avaliableScheduleList.add(avaliableSchedule);
+    private boolean isDayComplete(LocalDate date) {
+        for (int hour = 11; hour <= 23; hour++) {
+            LocalTime time = LocalTime.of(hour, 0);
+            if (!avaliableScheduleRepository.findByDayAvailableAndHourAvailable(date, time).isPresent()) {
+                return false;
+            }
         }
+        return true;
+    }
+
+    private void fillDay(LocalDate date) {
+        List<AvailableScheduleEntity> availableScheduleList = new ArrayList<>();
+        for (int hour = 11; hour <= 23; hour++) {
+            LocalTime time = LocalTime.of(hour, 0);
+            if (!avaliableScheduleRepository.findByDayAvailableAndHourAvailable(date, time).isPresent()) {
+                AvailableScheduleEntity availableSchedule = new AvailableScheduleEntity();
+                availableSchedule.setDayAvailable(date);
+                availableSchedule.setHourAvailable(time);
+                availableSchedule.setAvailable(1);
+                availableScheduleList.add(availableSchedule);
+            }
+        }
+        avaliableScheduleRepository.saveAll(availableScheduleList);
     }
 }

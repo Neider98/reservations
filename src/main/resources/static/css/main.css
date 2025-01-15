@@ -105,28 +105,51 @@ main {
 
 /* Estilos para los modales */
 .modal-content {
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
 
 .modal-header {
+    border-radius: 15px 15px 0 0;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.input-group-text {
     background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
-    border-radius: 12px 12px 0 0;
-    padding: 1.5rem;
+    border-right: none;
 }
 
-.modal-title {
-    color: #2c3e50;
-    font-weight: 600;
+.form-control {
+    border-left: none;
 }
 
-.modal-body {
-    padding: 1.5rem;
+.form-control:focus {
+    box-shadow: none;
+    border-color: #ced4da;
 }
 
-.modal-footer {
-    border-top: 1px solid #dee2e6;
-    padding: 1rem 1.5rem;
+.input-group:focus-within {
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}
+
+.btn {
+    padding: 8px 20px;
+    font-weight: 500;
+}
+
+.invalid-feedback {
+    font-size: 80%;
+}
+
+/* Animación para el modal */
+.modal.fade .modal-dialog {
+    transition: transform .3s ease-out;
+}
+
+.modal.show .modal-dialog {
+    transform: none;
 }

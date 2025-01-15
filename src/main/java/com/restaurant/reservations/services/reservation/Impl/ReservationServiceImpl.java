@@ -27,7 +27,10 @@ public class ReservationServiceImpl implements IReservationService {
 
     @Override
     public List<ReservationEntity> getReservationByDay(LocalDate date) {
-        return reservationRepository.findByReservationDateDayAvailable(date);
+        return reservationRepository
+                .findByReservationDateDayAvailableAndStatusNotIgnoreCase(
+                        date,
+                        "canelada");
     }
 
     @Override
