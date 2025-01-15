@@ -2,6 +2,7 @@ package com.restaurant.reservations.services.available.Impl;
 
 import com.restaurant.reservations.mapper.availableSchedule.IAvailableScheduleMapper;
 import com.restaurant.reservations.models.dto.AvailableScheduleDto;
+import com.restaurant.reservations.models.entities.AvailableScheduleEntity;
 import com.restaurant.reservations.repositories.AvailableSchedule.IAvailableScheduleRepository;
 import com.restaurant.reservations.services.available.IAvailableScheduleService;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +43,13 @@ public class AvailableScheduleServiceImpl implements IAvailableScheduleService {
     @Override
     public AvailableScheduleDto updateAvailableSchedule(AvailableScheduleDto availableScheduleDto) {
         var availableScheduleEntity = availableScheduleMapping.mapDtoToEntity(availableScheduleDto);
-        var availableSchedule = availableScheduleRepository.save(availableScheduleEntity);
-        return availableScheduleMapping.mapEntityToDto(availableSchedule);
+        Optional<AvailableScheduleEntity> availableSchedule =
+                availableScheduleRepository.findById(availableScheduleEntity.getId());
+        if (availableSchedule.isPresent()) {
+            availableScheduleEntity.setAvailable(availableSchedule.get().getAvailable());
+            availableScheduleRepository.save(availableScheduleEntity);
+            return availableScheduleMapping.mapEntityToDto(availableScheduleEntity);
+        }
+        return availableScheduleMapping.mapEntityToDto(availableSchedule.get());
     }
 }

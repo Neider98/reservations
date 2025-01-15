@@ -26,6 +26,8 @@ public class ReservationEntity implements Serializable {
     private CustomerEntity customer;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
+    @Column(name = "estado")
+    private String status;
 
     @PrePersist
     public void setCreateAt() {

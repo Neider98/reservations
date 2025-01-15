@@ -9,6 +9,7 @@ public interface IReservationService {
 
     public ReservationEntity createReservation(ReservationEntity reservation);
     public List<ReservationEntity> getReservationByDay(LocalDate date);
+    public ReservationEntity getReservationById(long id);
     public ReservationEntity updateReservation(ReservationEntity reservation, long id);
     public ReservationEntity deleteReservation(long id);
 

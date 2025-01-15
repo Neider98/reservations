@@ -56,9 +56,18 @@ public class ReservationFacade {
 
     public ReservationDto updateReservation(ReservationDto reservation,
                                             long id) {
+
+        var reservationEntity = reservationService.getReservationById(id);
+        if (reservationEntity == null) {
+            return new ReservationDto();
+        }
+        if (!reservationEntity.getStatus().equals(reservation.getStatus())) {
+                availableScheduleService.updateAvailableSchedule(
+                        reservation.getReservationDate());
+        }
         return reservationMapping.mapEntityToDto(reservationService.updateReservation(
-                        reservationMapping.mapDtoToEntity(reservation),
-                        id));
+                                reservationMapping.mapDtoToEntity(reservation),
+                                id));
     }
 
     public ReservationDto deleteReservation(long id) {

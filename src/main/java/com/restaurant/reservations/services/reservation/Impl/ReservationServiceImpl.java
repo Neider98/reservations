@@ -31,6 +31,11 @@ public class ReservationServiceImpl implements IReservationService {
     }
 
     @Override
+    public ReservationEntity getReservationById(long id) {
+        return reservationRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public ReservationEntity updateReservation(ReservationEntity reservation,
                                           long id) {
         Optional<ReservationEntity> reservationFind = reservationRepository.findById(id);
